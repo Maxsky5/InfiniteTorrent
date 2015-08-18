@@ -1,0 +1,41 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myTorrentLabel">Ajouter un torrent</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" ngf-drop ngf-change="setFile($files, torrent)">
+            <label for="field_file">File</label>
+            <div>
+                <div class="help-block clearfix">
+                    <span class="pull-left">{{byteSize(torrent.file)}}</span>
+                    <button ng-click="torrent.file=null"
+                            ng-if="torrent.file"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <button type="file" ngf-select class="btn btn-default btn-block"
+                        ngf-change="setFile($files, torrent)">
+                    Sélectionnez le fichier
+                </button>
+            </div>
+            <input type="hidden" class="form-control" name="file" id="field_file"
+                    ng-model="torrent.file"
+                    >
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || editForm.$submitted" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>

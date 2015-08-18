@@ -1,0 +1,78 @@
+<div>
+
+    <h2>Torrents</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="torrent.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Ajouter un Torrent</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteTorrentConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(torrent.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title">Confimer la suppression</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sûr de vouloir supprimer ce Torrent?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>Supprimer</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Date d'ajout</th>
+                    <th>Taille totale</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+                <tr ng-repeat="torrent in torrents">
+                    <td><a ui-sref="torrent.detail({id:torrent.id})">{{torrent.id}}</a></td>
+                    <td>{{torrent.name}}</td>
+                    <td>{{torrent.created}}</td>
+                    <td>{{torrent.totalSize}}</td>
+                    <td>
+                        <button type="submit"
+                                ng-click="download(torrent.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-download"></span>&nbsp;<span> Télécharger</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="torrent.detail({id:torrent.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Détails</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(torrent.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

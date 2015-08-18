@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "baseName": "InfiniteTorrent",
+    "packageName": "com.cesi.infinitetorrent",
+    "packageFolder": "com/cesi/infinitetorrent",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "enableTranslation": false,
+    "rememberMeKey": "bf51b849963aa27bf2e6bd391776cb401fdd5b18"
+  }
+}

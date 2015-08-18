@@ -1,0 +1,86 @@
+
+<div>
+    <h2><span>Torrent</span> {{torrent.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Name</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.name}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Comment</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.comment}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Created</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.created}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CreatedBy</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.createdBy}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>TotalSize</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.totalSize}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Seeders</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.seeders}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Leechers</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.leechers}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>File</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{torrent.file}}" readonly>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="torrent"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>
