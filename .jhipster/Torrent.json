@@ -1,0 +1,46 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "comment",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "created",
+            "fieldType": "DateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "totalSize",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "file",
+            "fieldType": "byte[]"
+        }
+    ],
+    "dto": "no",
+    "pagination": "infinite-scroll"
+}
