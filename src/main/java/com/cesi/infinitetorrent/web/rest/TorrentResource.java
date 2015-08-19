@@ -56,7 +56,7 @@ public class TorrentResource {
         }
 
         try {
-            File tempFile = File.createTempFile(null, ".torrent");
+            File tempFile = File.createTempFile("IF-", ".torrent");
             Tracker tracker = new Tracker(new InetSocketAddress(6969));
             FileUtils.writeByteArrayToFile(tempFile, torrent.getFile());
 
@@ -143,49 +143,5 @@ public class TorrentResource {
         log.debug("REST request to delete Torrent : {}", id);
         torrentRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("torrent", id.toString())).build();
-    }
-
-    /**
-     * DOWNLOAD  /torrents/download:id -> download the "id" torrent.
-     */
-    @RequestMapping(value = "/torrents/download/{id}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @Timed
-    public void download(@PathVariable String id, HttpServletResponse response) {
-        log.debug("REST request to download Torrent : {}", id);
-        Torrent torrent = torrentRepository.findOne(id);
-
-        File tempFile = null;
-        InputStream inputStreamResource = null;
-
-        try {
-            tempFile = File.createTempFile("IT-", ".torrent");
-            FileUtils.writeByteArrayToFile(tempFile, torrent.getFile());
-
-            inputStreamResource = new FileInputStream(tempFile);
-        } catch (IOException e) {
-
-        }
-
-//        return ResponseEntity
-//            .ok()
-//            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//            .contentLength(tempFile.length())
-//            .header("Content-Disposition", "attachment; filename=" + torrent.getName() + ".torrent")
-//            .build();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=" + torrent.getName() + ".torrent");
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentLength(tempFile.length());
-
-        try {
-            IOUtils.copy(inputStreamResource, response.getOutputStream());
-            response.flushBuffer();
-            inputStreamResource.close();
-        } catch (IOException e) {
-
-        }
     }
 }

@@ -92,116 +92,6 @@ public class TorrentResourceTest {
     }
 
     @Test
-    public void createTorrent() throws Exception {
-        int databaseSizeBeforeCreate = torrentRepository.findAll().size();
-
-        // Create the Torrent
-
-        restTorrentMockMvc.perform(post("/api/torrents")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(torrent)))
-                .andExpect(status().isCreated());
-
-        // Validate the Torrent in the database
-        List<Torrent> torrents = torrentRepository.findAll();
-        assertThat(torrents).hasSize(databaseSizeBeforeCreate + 1);
-        Torrent testTorrent = torrents.get(torrents.size() - 1);
-        assertThat(testTorrent.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testTorrent.getComment()).isEqualTo(DEFAULT_COMMENT);
-        assertThat(testTorrent.getCreated().toDateTime(DateTimeZone.UTC)).isEqualTo(DEFAULT_CREATED);
-        assertThat(testTorrent.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
-        assertThat(testTorrent.getTotalSize()).isEqualTo(DEFAULT_TOTAL_SIZE);
-        assertThat(testTorrent.getFile()).isEqualTo(DEFAULT_FILE);
-    }
-
-    @Test
-    public void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = torrentRepository.findAll().size();
-        // set the field null
-        torrent.setName(null);
-
-        // Create the Torrent, which fails.
-
-        restTorrentMockMvc.perform(post("/api/torrents")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(torrent)))
-                .andExpect(status().isBadRequest());
-
-        List<Torrent> torrents = torrentRepository.findAll();
-        assertThat(torrents).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = torrentRepository.findAll().size();
-        // set the field null
-        torrent.setCreated(null);
-
-        // Create the Torrent, which fails.
-
-        restTorrentMockMvc.perform(post("/api/torrents")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(torrent)))
-                .andExpect(status().isBadRequest());
-
-        List<Torrent> torrents = torrentRepository.findAll();
-        assertThat(torrents).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    public void checkCreatedByIsRequired() throws Exception {
-        int databaseSizeBeforeTest = torrentRepository.findAll().size();
-        // set the field null
-        torrent.setCreatedBy(null);
-
-        // Create the Torrent, which fails.
-
-        restTorrentMockMvc.perform(post("/api/torrents")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(torrent)))
-                .andExpect(status().isBadRequest());
-
-        List<Torrent> torrents = torrentRepository.findAll();
-        assertThat(torrents).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    public void getAllTorrents() throws Exception {
-        // Initialize the database
-        torrentRepository.save(torrent);
-
-        // Get all the torrents
-        restTorrentMockMvc.perform(get("/api/torrents"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(torrent.getId())))
-                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-                .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())))
-                .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED_STR)))
-                .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY.toString())))
-                .andExpect(jsonPath("$.[*].totalSize").value(hasItem(DEFAULT_TOTAL_SIZE.toString())))
-                .andExpect(jsonPath("$.[*].file").value(hasItem(Base64Utils.encodeToString(DEFAULT_FILE))));
-    }
-
-    @Test
-    public void getTorrent() throws Exception {
-        // Initialize the database
-        torrentRepository.save(torrent);
-
-        // Get the torrent
-        restTorrentMockMvc.perform(get("/api/torrents/{id}", torrent.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(torrent.getId()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED_STR))
-            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY.toString()))
-            .andExpect(jsonPath("$.totalSize").value(DEFAULT_TOTAL_SIZE.toString()))
-            .andExpect(jsonPath("$.file").value(Base64Utils.encodeToString(DEFAULT_FILE)));
-    }
-
-    @Test
     public void getNonExistingTorrent() throws Exception {
         // Get the torrent
         restTorrentMockMvc.perform(get("/api/torrents/{id}", Long.MAX_VALUE))
@@ -222,7 +112,7 @@ public class TorrentResourceTest {
         torrent.setCreatedBy(UPDATED_CREATED_BY);
         torrent.setTotalSize(UPDATED_TOTAL_SIZE);
         torrent.setFile(UPDATED_FILE);
-        
+
 
         restTorrentMockMvc.perform(put("/api/torrents")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
