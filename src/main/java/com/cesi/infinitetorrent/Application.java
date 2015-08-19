@@ -79,33 +79,6 @@ public class Application {
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));
-
-        try {
-            // First, instantiate a Tracker object with the port you want it to listen on.
-            // The default tracker port recommended by the BitTorrent protocol is 6969.
-            Tracker tracker = new Tracker(new InetSocketAddress(6969));
-
-            // Then, for each torrent you wish to announce on this tracker, simply created
-            // a TrackedTorrent object and pass it to the tracker.announce() method:
-            FilenameFilter filter = new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".torrent");
-                }
-            };
-
-            for (File f : new File("D:/tmp").listFiles(filter)) {
-                tracker.announce(TrackedTorrent.load(f));
-            }
-
-            // Once done, you just have to start the tracker's main operation loop:
-            tracker.start();
-
-            // You can stop the tracker when you're done with:
-            tracker.stop();
-        } catch (IOException e) {
-
-        }
     }
 
     /**
