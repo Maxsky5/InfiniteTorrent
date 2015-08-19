@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
@@ -32,20 +34,25 @@ public class TorrentDownloadResource {
     @RequestMapping(value = "/api/torrents/download/{id}",
         method = RequestMethod.GET)
     @Timed
-    public void download(@PathVariable String id, HttpServletResponse response) {
+    @ResponseBody
+    public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
         log.debug("REST request to download Torrent : {}", id);
+
         Torrent torrent = torrentRepository.findOne(id);
 
         InputStream inputStream = new ByteArrayInputStream(torrent.getFile());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=" + torrent.getName() + ".torrent");
+
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        response.setHeader("Content-Disposition", "attachment; filename=" + torrent.getName() + ".torrent");
 
         try {
-            IOUtils.copy(inputStream, response.getOutputStream());
-            response.getOutputStream().write(torrent.getFile());
-            response.flushBuffer();
+            OutputStream outStream = response.getOutputStream();
+            IOUtils.copy(inputStream, outStream);
+
             inputStream.close();
+            outStream.close();
         } catch (IOException e) {
 
         }

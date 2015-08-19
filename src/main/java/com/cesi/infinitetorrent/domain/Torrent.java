@@ -1,15 +1,16 @@
 package com.cesi.infinitetorrent.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.cesi.infinitetorrent.domain.util.CustomDateTimeDeserializer;
 import com.cesi.infinitetorrent.domain.util.CustomDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -47,6 +48,7 @@ public class Torrent implements Serializable {
 
 
     @Field("file")
+    @JsonIgnore
     private byte[] file;
 
     @Field("leechers")

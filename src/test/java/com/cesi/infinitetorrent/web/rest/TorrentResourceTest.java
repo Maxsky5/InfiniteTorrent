@@ -99,39 +99,6 @@ public class TorrentResourceTest {
     }
 
     @Test
-    public void updateTorrent() throws Exception {
-        // Initialize the database
-        torrentRepository.save(torrent);
-
-		int databaseSizeBeforeUpdate = torrentRepository.findAll().size();
-
-        // Update the torrent
-        torrent.setName(UPDATED_NAME);
-        torrent.setComment(UPDATED_COMMENT);
-        torrent.setCreated(UPDATED_CREATED);
-        torrent.setCreatedBy(UPDATED_CREATED_BY);
-        torrent.setTotalSize(UPDATED_TOTAL_SIZE);
-        torrent.setFile(UPDATED_FILE);
-
-
-        restTorrentMockMvc.perform(put("/api/torrents")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(torrent)))
-                .andExpect(status().isOk());
-
-        // Validate the Torrent in the database
-        List<Torrent> torrents = torrentRepository.findAll();
-        assertThat(torrents).hasSize(databaseSizeBeforeUpdate);
-        Torrent testTorrent = torrents.get(torrents.size() - 1);
-        assertThat(testTorrent.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testTorrent.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testTorrent.getCreated().toDateTime(DateTimeZone.UTC)).isEqualTo(UPDATED_CREATED);
-        assertThat(testTorrent.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
-        assertThat(testTorrent.getTotalSize()).isEqualTo(UPDATED_TOTAL_SIZE);
-        assertThat(testTorrent.getFile()).isEqualTo(UPDATED_FILE);
-    }
-
-    @Test
     public void deleteTorrent() throws Exception {
         // Initialize the database
         torrentRepository.save(torrent);

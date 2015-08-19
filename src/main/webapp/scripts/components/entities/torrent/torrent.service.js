@@ -2,8 +2,6 @@
 
 angular.module('infinitetorrentApp')
     .factory('Torrent', function ($resource, DateUtils) {
-        console.log('torrent.service.js');
-        console.log($resource);
         return $resource('api/torrents/:id', {}, {
             query: { method: 'GET', isArray: true},
             get: {
@@ -14,7 +12,6 @@ angular.module('infinitetorrentApp')
                     return data;
                 }
             },
-            update: { method:'PUT' },
-            download: { method:'GET', url: 'api/torrents/download/:id' }
+            update: { method:'PUT' }
         });
     });

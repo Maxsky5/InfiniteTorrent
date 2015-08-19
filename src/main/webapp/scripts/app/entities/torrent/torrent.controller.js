@@ -40,15 +40,7 @@ angular.module('infinitetorrentApp')
         };
 
         $scope.download = function (id) {
-            console.log('torrent.controller.js');
-            console.log(id);
-            console.log($scope.torrent);
-            //$window.location = 'api/torrents/download/' + id;
-            Torrent.download({id: id}, function(result) {
-                $scope.torrent = result;
-                console.log('coucou');
-                console.log(result);
-            });
+            window.location = 'api/torrents/download/' + id;
         };
 
         $scope.refresh = function () {
