@@ -18,15 +18,19 @@
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                 </div>
-                <button type="file" ngf-select class="btn btn-default btn-block"
-                        ngf-change="setFile($files, torrent)">
+                <button type="file" ngf-select class="btn btn-default btn-block" ngf-change="setFile($files, torrent)">
                     Sélectionnez le fichier
                 </button>
             </div>
-            <input type="hidden" class="form-control" name="file" id="field_file"
-                    ng-model="torrent.file"
-                    >
-
+            <input type="hidden" class="form-control" name="file" id="field_file" ng-model="torrent.file">
+        </div>
+        <div class="form-group">
+            <ui-select multiple ng-model="$parent.selectedTags" theme="bootstrap" ng-disabled="disabled">
+                <ui-select-match placeholder="Sélectionnez des tags">{{$item.name}}</ui-select-match>
+                <ui-select-choices repeat="tag in tags | filter: $select.search">
+                    <div ng-bind-html="tag.name"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
 
     </div>

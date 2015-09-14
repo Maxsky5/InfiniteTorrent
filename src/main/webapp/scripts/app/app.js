@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('infinitetorrentApp', ['LocalStorageModule', 
-               'ui.bootstrap', // for modal dialogs
-    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'ngFileUpload', 'infinite-scroll'])
+angular.module('infinitetorrentApp', ['LocalStorageModule', 'ui.bootstrap',
+    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'ngFileUpload', 'infinite-scroll', 'ui.select', 'ngSanitize'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;
@@ -14,7 +13,7 @@ angular.module('infinitetorrentApp', ['LocalStorageModule',
             if (Principal.isIdentityResolved()) {
                 Auth.authorize();
             }
-            
+
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
@@ -69,5 +68,5 @@ angular.module('infinitetorrentApp', ['LocalStorageModule',
         $httpProvider.interceptors.push('errorHandlerInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
         $httpProvider.interceptors.push('notificationInterceptor');
-        
+
     });

@@ -1,14 +1,27 @@
 'use strict';
 
 angular.module('infinitetorrentApp').controller('TorrentDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Torrent',
-        function($scope, $stateParams, $modalInstance, entity, Torrent) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Torrent', 'Tag',
+        function($scope, $stateParams, $modalInstance, entity, Torrent, Tag) {
 
         $scope.torrent = entity;
+
+        $scope.tags = [];
+        $scope.selectedTags = [];
+
+        $scope.loadTags = function(query) {
+            Tag.getAll({}, function(result) {
+                $scope.tags = result;
+            });
+        };
+
+        $scope.loadTags();
+
         $scope.load = function(id) {
             Torrent.get({id : id}, function(result) {
                 $scope.torrent = result;
             });
+
         };
 
         var onSaveFinished = function (result) {
@@ -17,11 +30,8 @@ angular.module('infinitetorrentApp').controller('TorrentDialogController',
         };
 
         $scope.save = function () {
-            if ($scope.torrent.id != null) {
-                Torrent.update($scope.torrent, onSaveFinished);
-            } else {
-                Torrent.save($scope.torrent, onSaveFinished);
-            }
+            $scope.torrent.tags = $scope.selectedTags;
+            Torrent.save($scope.torrent, onSaveFinished);
         };
 
         $scope.clear = function() {

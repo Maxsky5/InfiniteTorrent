@@ -66,6 +66,14 @@
                     <input type="text" class="input-sm form-control" value="{{torrent.leechers}}" readonly>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <span>Tags</span>
+                </td>
+                <td>
+                    <span class="btn btn-default" ng-repeat="tag in torrent.tags">{{tag.name}}</span>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

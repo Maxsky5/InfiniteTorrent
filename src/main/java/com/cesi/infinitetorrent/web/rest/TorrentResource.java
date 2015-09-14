@@ -112,6 +112,11 @@ public class TorrentResource {
                                                 @RequestParam(value = "per_page", required = false) Integer limit)
         throws URISyntaxException {
         Page<Torrent> page = torrentRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
+
+        for (Torrent torrent : page) {
+            torrent.setFile(null);
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/torrents", offset, limit);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -125,7 +130,9 @@ public class TorrentResource {
     @Timed
     public ResponseEntity<Torrent> get(@PathVariable String id) {
         log.debug("REST request to get Torrent : {}", id);
-        return Optional.ofNullable(torrentRepository.findOne(id))
+        Torrent torrentObject = torrentRepository.findOne(id);
+        torrentObject.setFile(null);
+        return Optional.ofNullable(torrentObject)
             .map(torrent -> new ResponseEntity<>(
                 torrent,
                 HttpStatus.OK))
