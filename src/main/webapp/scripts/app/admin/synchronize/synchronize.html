@@ -1,0 +1,14 @@
+<div>
+
+<h2>Synchronize</h2>
+<p>
+    <button type="button" class="btn btn-primary" ng-click="synchronize()"><span class="glyphicon glyphicon-refresh"></span>&nbsp;<span>Synchronize</span></button>
+</p>
+
+<p ng-show="trackers.length > 0">Liste des trackers synchronisés</p>
+<ul>
+    <li ng-repeat="tracker in trackers">{{tracker.url}}</li>
+</ul>
+
+</div>
+

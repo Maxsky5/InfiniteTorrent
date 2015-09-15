@@ -1,7 +1,6 @@
 package com.cesi.infinitetorrent.service;
 
 import com.cesi.infinitetorrent.domain.Authority;
-import com.cesi.infinitetorrent.domain.PersistentToken;
 import com.cesi.infinitetorrent.domain.User;
 import com.cesi.infinitetorrent.repository.AuthorityRepository;
 import com.cesi.infinitetorrent.repository.PersistentTokenRepository;

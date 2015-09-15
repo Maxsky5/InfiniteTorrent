@@ -2,7 +2,6 @@ package com.cesi.infinitetorrent.domain;
 
 import com.cesi.infinitetorrent.domain.util.CustomDateTimeDeserializer;
 import com.cesi.infinitetorrent.domain.util.CustomDateTimeSerializer;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.DateTime;
@@ -13,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,6 +60,14 @@ public class Torrent implements Serializable {
 
     @DBRef
     private List<Tag> tags;
+
+    @DBRef
+    private List<InfiniteTracker> infiniteTrackers;
+
+
+    public Torrent() {
+        this.infiniteTrackers = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -139,6 +147,14 @@ public class Torrent implements Serializable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<InfiniteTracker> getInfiniteTrackers() {
+        return infiniteTrackers;
+    }
+
+    public void setInfiniteTrackers(List<InfiniteTracker> infiniteTrackers) {
+        this.infiniteTrackers = infiniteTrackers;
     }
 
     @Override
