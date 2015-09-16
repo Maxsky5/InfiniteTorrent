@@ -1,0 +1,46 @@
+
+<div>
+    <h2><span>Tracker</span> {{tag.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Host</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{tracker.host}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>URL</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{tracker.url}}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Date last synchronization</span>
+                </td>
+                <td>
+                    <input type="text" class="input-sm form-control" value="{{tracker.dateLastSync}}" readonly>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="tracker"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

@@ -31,6 +31,14 @@ public class InfiniteTracker implements Serializable {
     @Field("date_last_sync")
     private DateTime dateLastSync;
 
+    public InfiniteTracker() {
+    }
+
+    public InfiniteTracker(URI uri) {
+        this.setHost(uri.getHost());
+        this.setUrl(uri.toString());
+    }
+
     public String getId() {
         return id;
     }
@@ -61,14 +69,6 @@ public class InfiniteTracker implements Serializable {
 
     public void setDateLastSync(DateTime dateLastSync) {
         this.dateLastSync = dateLastSync;
-    }
-
-    public InfiniteTracker() {
-    }
-
-    public InfiniteTracker(URI uri) {
-        this.setHost(uri.getHost());
-        this.setUrl(uri.toString());
     }
 
     @Override

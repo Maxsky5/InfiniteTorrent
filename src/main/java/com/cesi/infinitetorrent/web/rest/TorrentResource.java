@@ -112,13 +112,17 @@ public class TorrentResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Torrent> getAfterDate(@RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date)
+    public List<Torrent> getAfterDate(
+        @RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
+        @RequestParam(value = "file", required = false, defaultValue = "false") Boolean withFile
+        )
         throws URISyntaxException {
         List<Torrent> torrents = torrentRepository.findAllByUpdatedAfter(new DateTime(date));
 
-        for (Torrent torrent : torrents) {
-            torrent.setFile(null);
-            System.out.println(torrent.getName());
+        if (!withFile) {
+            for (Torrent torrent : torrents) {
+                torrent.setFile(null);
+            }
         }
 
         return torrents;
