@@ -5,6 +5,7 @@ import com.cesi.infinitetorrent.domain.Torrent;
 import com.cesi.infinitetorrent.repository.InfiniteTrackerRepository;
 import com.cesi.infinitetorrent.repository.TorrentRepository;
 import com.codahale.metrics.annotation.Timed;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -44,13 +45,11 @@ public class SynchronizeResource {
         List<InfiniteTracker> trackers = infiniteTrackerRepository.findTop5ByOrderByDateLastSyncAsc();
 
         for (InfiniteTracker tracker : trackers) {
-            System.out.println(tracker.getHost());
-//            tracker.setDateLastSync(new DateTime());
-//            infiniteTrackerRepository.save(tracker);
+            tracker.setDateLastSync(new DateTime());
+            infiniteTrackerRepository.save(tracker);
             List<Torrent> torrents = new ArrayList<>();
             RestTemplate restTemplate = new RestTemplate();
             Torrent[] trackerTorrents = restTemplate.getForObject(tracker.getUrl() + "?file=true", Torrent[].class);
-            List<Torrent> trackerTorrents2 = restTemplate.getForObject(tracker.getUrl() + "?file=true", List.class);
 
             for (Torrent torrent : trackerTorrents) {
                 torrents.add(torrent);
@@ -59,7 +58,6 @@ public class SynchronizeResource {
             Long nbTorrents = torrents.stream()
                 .filter(torrent -> torrentRepository.findOne(torrent.getId()) == null)
                 .peek(torrent -> {
-                    System.out.println(torrent.getName());
                     torrentRepository.save(torrent);
                 })
                 .count();
