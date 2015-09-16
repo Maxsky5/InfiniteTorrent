@@ -1,20 +1,16 @@
 package com.cesi.infinitetorrent.web.rest;
 
-import com.cesi.infinitetorrent.domain.InfiniteTracker;
 import com.cesi.infinitetorrent.domain.Torrent;
-import com.cesi.infinitetorrent.repository.InfiniteTrackerRepository;
 import com.cesi.infinitetorrent.repository.TorrentRepository;
 import com.cesi.infinitetorrent.service.TorrentService;
 import com.cesi.infinitetorrent.web.rest.util.HeaderUtil;
 import com.cesi.infinitetorrent.web.rest.util.PaginationUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.turn.ttorrent.tracker.TrackedTorrent;
-import com.turn.ttorrent.tracker.Tracker;
-import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,17 +18,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Torrent.
@@ -85,6 +76,7 @@ public class TorrentResource {
                 .headers(HeaderUtil.createEntityCreationAlert("torrent", result.getId().toString()))
                 .body(result);
         } else {
+            torrent.setUpdated(new DateTime());
             Torrent result = torrentRepository.save(torrent);
 
             return ResponseEntity.ok()
@@ -111,6 +103,25 @@ public class TorrentResource {
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/torrents", offset, limit);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /torrents -> get all the torrents.
+     */
+    @RequestMapping(value = "/torrents/after",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Torrent> getAfterDate(@RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date)
+        throws URISyntaxException {
+        List<Torrent> torrents = torrentRepository.findAllByUpdatedAfter(new DateTime(date));
+
+        for (Torrent torrent : torrents) {
+            torrent.setFile(null);
+            System.out.println(torrent.getName());
+        }
+
+        return torrents;
     }
 
     /**

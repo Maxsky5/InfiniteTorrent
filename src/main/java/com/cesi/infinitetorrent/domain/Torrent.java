@@ -30,16 +30,18 @@ public class Torrent implements Serializable {
     @Field("name")
     private String name;
 
-
     @Field("comment")
     private String comment;
-
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     @Field("created")
     private DateTime created;
 
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    @Field("updated")
+    private DateTime updated;
 
     @Field("created_by")
     private String createdBy;
@@ -99,6 +101,14 @@ public class Torrent implements Serializable {
 
     public void setCreated(DateTime created) {
         this.created = created;
+    }
+
+    public DateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(DateTime updated) {
+        this.updated = updated;
     }
 
     public String getCreatedBy() {

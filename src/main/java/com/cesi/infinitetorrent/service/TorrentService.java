@@ -48,6 +48,7 @@ public class TorrentService {
             TrackedTorrent torrentFile = TrackedTorrent.load(tempFile);
 
             torrent.setCreated(new DateTime());
+            torrent.setUpdated(new DateTime());
             torrent.setName(torrentFile.getName());
             torrent.setComment(torrentFile.getComment());
             torrent.setCreatedBy(torrentFile.getCreatedBy());

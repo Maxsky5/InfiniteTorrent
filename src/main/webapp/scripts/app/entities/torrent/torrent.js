@@ -7,7 +7,7 @@ angular.module('infinitetorrentApp')
                 parent: 'entity',
                 url: '/torrents',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: [],
                     pageTitle: 'Torrents'
                 },
                 views: {
