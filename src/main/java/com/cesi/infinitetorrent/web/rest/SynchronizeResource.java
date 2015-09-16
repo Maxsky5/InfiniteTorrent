@@ -5,17 +5,19 @@ import com.cesi.infinitetorrent.domain.Torrent;
 import com.cesi.infinitetorrent.repository.InfiniteTrackerRepository;
 import com.cesi.infinitetorrent.repository.TorrentRepository;
 import com.codahale.metrics.annotation.Timed;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SynchronizeResource {
@@ -35,32 +37,39 @@ public class SynchronizeResource {
         method = RequestMethod.GET)
     @Timed
     @ResponseBody
-    public List<InfiniteTracker> synchronize() {
+    public List<Map<Long, InfiniteTracker>> synchronize() {
         log.debug("REST request to synchronize the tracker : {}");
+        List<Map<Long, InfiniteTracker>> result = new ArrayList<>();
 
         List<InfiniteTracker> trackers = infiniteTrackerRepository.findTop5ByOrderByDateLastSyncAsc();
-        List<Torrent> torrents = new ArrayList<>();
 
         for (InfiniteTracker tracker : trackers) {
             System.out.println(tracker.getHost());
 //            tracker.setDateLastSync(new DateTime());
 //            infiniteTrackerRepository.save(tracker);
+            List<Torrent> torrents = new ArrayList<>();
             RestTemplate restTemplate = new RestTemplate();
             Torrent[] trackerTorrents = restTemplate.getForObject(tracker.getUrl() + "?file=true", Torrent[].class);
+            List<Torrent> trackerTorrents2 = restTemplate.getForObject(tracker.getUrl() + "?file=true", List.class);
 
             for (Torrent torrent : trackerTorrents) {
                 torrents.add(torrent);
             }
+
+            Long nbTorrents = torrents.stream()
+                .filter(torrent -> torrentRepository.findOne(torrent.getId()) == null)
+                .peek(torrent -> {
+                    System.out.println(torrent.getName());
+                    torrentRepository.save(torrent);
+                })
+                .count();
+
+            result.add(new HashMap<Long, InfiniteTracker>() {{
+                put(nbTorrents, tracker);
+            }});
         }
 
-        torrents.stream()
-            .filter(torrent -> torrentRepository.findOne(torrent.getId()) != null)
-            .peek(torrent -> {
-                System.out.println(torrent.getName());
-                torrentRepository.save(torrent);
-            });
-
-        return trackers;
+        return result;
     }
 
 }

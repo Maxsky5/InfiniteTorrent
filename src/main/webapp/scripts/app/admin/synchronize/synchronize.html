@@ -7,7 +7,7 @@
 
 <p ng-show="trackers.length > 0">Liste des trackers synchronisés</p>
 <ul>
-    <li ng-repeat="tracker in trackers">{{tracker.host}}</li>
+    <li ng-repeat="tracker in trackers">{{tracker.host}} : <span class="label label-success">{{tracker.nbTorrent}}</span></li>
 </ul>
 
 </div>
