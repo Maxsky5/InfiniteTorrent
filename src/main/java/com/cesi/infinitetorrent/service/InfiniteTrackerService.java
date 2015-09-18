@@ -13,7 +13,7 @@ import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 
 /**
- * Service class for managing torrents
+ * Service class for managing trackers
  */
 @Service
 public class InfiniteTrackerService {
@@ -21,9 +21,14 @@ public class InfiniteTrackerService {
     @Inject
     private TorrentRepository torrentRepository;
 
+    @Inject
+    public static Tracker tracker = null;
+
     public void startTracker() {
         try {
-            Tracker tracker = new Tracker(new InetSocketAddress(6969));
+            if (null == tracker) {
+                tracker = new Tracker(new InetSocketAddress(6969));
+            }
 
             torrentRepository.findAll().stream()
                 .map(torrent -> {
@@ -41,5 +46,13 @@ public class InfiniteTrackerService {
         } catch (IOException e) {
 
         }
+    }
+
+    public void stopTracker() {
+        tracker.stop();
+    }
+
+    public Tracker getTracker() {
+        return tracker;
     }
 }
