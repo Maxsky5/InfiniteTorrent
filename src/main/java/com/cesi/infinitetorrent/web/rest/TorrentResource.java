@@ -21,9 +21,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Torrent.
@@ -108,35 +106,21 @@ public class TorrentResource {
     /**
      * GET  /torrents -> get all the torrents.
      */
-    @RequestMapping(value = "/torrents/after",
+    @RequestMapping(value = "/sync/torrents",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Torrent> getAfterDate(
-        @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-        @RequestParam(value = "file", required = false, defaultValue = "false") Boolean withFile
-    )
+    public List<Torrent> getTorrentsForSync(@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date)
         throws URISyntaxException {
-        List<Torrent> torrents;
-
-        if (null == date) {
-            torrents = torrentRepository.findAll();
-        } else {
-            torrents = torrentRepository.findAllByUpdatedAfter(new DateTime(date));
-        }
-
-        if (!withFile) {
-            for (Torrent torrent : torrents) {
-                torrent.setFile(null);
-            }
-        }
-
-        return torrents;
+        return Optional.ofNullable(date)
+            .map(dateAfter -> torrentRepository.findAllByUpdatedAfter(new DateTime(dateAfter)))
+            .orElse(torrentRepository.findAll());
     }
 
     /**
      * GET  /torrents/:id -> get the "id" torrent.
      */
+
     @RequestMapping(value = "/torrents/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)

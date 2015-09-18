@@ -6,16 +6,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.net.URI;
-import java.util.Objects;
 
 
 /**
  * A Tracker.
  */
 @Document(collection = "TRACKER")
-public class InfiniteTracker implements Serializable {
+public class InfiniteTracker {
 
     @Id
     private String id;
@@ -73,32 +71,22 @@ public class InfiniteTracker implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        InfiniteTracker that = (InfiniteTracker) o;
 
-        InfiniteTracker tag = (InfiniteTracker) o;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (host != null ? !host.equals(that.host) : that.host != null) return false;
+        return !(url != null ? !url.equals(that.url) : that.url != null);
 
-        if (!Objects.equals(id, tag.id)) return false;
-
-        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Tag{" +
-            "id=" + id +
-            ", host='" + host + "'" +
-            ", url='" + url + "'" +
-            '}';
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (host != null ? host.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
     }
 }

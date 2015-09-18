@@ -1,8 +1,6 @@
 package com.cesi.infinitetorrent;
 
 import com.cesi.infinitetorrent.config.Constants;
-import com.turn.ttorrent.tracker.TrackedTorrent;
-import com.turn.ttorrent.tracker.Tracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -15,11 +13,8 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;

@@ -1,7 +1,6 @@
 package com.cesi.infinitetorrent.repository;
 
 import com.cesi.infinitetorrent.domain.InfiniteTracker;
-import com.cesi.infinitetorrent.domain.Torrent;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class Torrent implements Serializable {
 
     @Field("comment")
     private String comment;
+
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
@@ -197,7 +199,7 @@ public class Torrent implements Serializable {
             ", created='" + created + "'" +
             ", createdBy='" + createdBy + "'" +
             ", totalSize='" + totalSize + "'" +
-            ", file='" + file + "'" +
+            ", file='" + Arrays.toString(file) + "'" +
             '}';
     }
 }

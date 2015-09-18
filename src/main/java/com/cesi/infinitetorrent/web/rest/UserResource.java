@@ -3,7 +3,6 @@ package com.cesi.infinitetorrent.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.cesi.infinitetorrent.domain.User;
 import com.cesi.infinitetorrent.repository.UserRepository;
-import com.cesi.infinitetorrent.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

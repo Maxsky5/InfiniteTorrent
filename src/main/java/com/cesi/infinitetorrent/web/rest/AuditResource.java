@@ -1,6 +1,5 @@
 package com.cesi.infinitetorrent.web.rest;
 
-import com.cesi.infinitetorrent.security.AuthoritiesConstants;
 import com.cesi.infinitetorrent.service.AuditEventService;
 import com.cesi.infinitetorrent.web.propertyeditors.LocaleDateTimeEditor;
 import org.joda.time.LocalDateTime;

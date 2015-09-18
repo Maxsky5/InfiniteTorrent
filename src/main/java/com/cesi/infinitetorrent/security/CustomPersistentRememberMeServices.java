@@ -1,7 +1,6 @@
 package com.cesi.infinitetorrent.security;
 
 import com.cesi.infinitetorrent.domain.PersistentToken;
-import com.cesi.infinitetorrent.domain.User;
 import com.cesi.infinitetorrent.repository.PersistentTokenRepository;
 import com.cesi.infinitetorrent.repository.UserRepository;
 import org.joda.time.LocalDate;

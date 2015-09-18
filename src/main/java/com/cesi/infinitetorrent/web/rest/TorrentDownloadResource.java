@@ -3,7 +3,6 @@ package com.cesi.infinitetorrent.web.rest;
 import com.cesi.infinitetorrent.domain.Torrent;
 import com.cesi.infinitetorrent.repository.TorrentRepository;
 import com.codahale.metrics.annotation.Timed;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

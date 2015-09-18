@@ -5,9 +5,9 @@
     <button type="button" class="btn btn-primary" ng-click="synchronize()"><span class="glyphicon glyphicon-refresh"></span>&nbsp;<span>Synchronize</span></button>
 </p>
 
-<p ng-show="trackers.length > 0">Liste des trackers synchronisés</p>
+<p ng-show="trackersDto.length > 0">Liste des trackers synchronisés</p>
 <ul>
-    <li ng-repeat="tracker in trackers">{{tracker.host}} : <span class="label label-success">{{tracker.nbTorrent}}</span></li>
+    <li ng-repeat="trackerDto in trackersDto">{{trackerDto.infiniteTracker.host}} : <span class="label label-success">{{trackerDto.number}}</span></li>
 </ul>
 
 </div>

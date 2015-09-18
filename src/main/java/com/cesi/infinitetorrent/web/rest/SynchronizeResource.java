@@ -4,26 +4,28 @@ import com.cesi.infinitetorrent.domain.InfiniteTracker;
 import com.cesi.infinitetorrent.domain.Torrent;
 import com.cesi.infinitetorrent.repository.InfiniteTrackerRepository;
 import com.cesi.infinitetorrent.repository.TorrentRepository;
+import com.cesi.infinitetorrent.web.rest.dto.InfiniteTrackerSynchronizeDto;
 import com.codahale.metrics.annotation.Timed;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class SynchronizeResource {
 
     private final Logger log = LoggerFactory.getLogger(SynchronizeResource.class);
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Inject
     private TorrentRepository torrentRepository;
@@ -34,40 +36,23 @@ public class SynchronizeResource {
     /**
      * SYNCHRONIZE
      */
-    @RequestMapping(value = "/api/synchronize",
-        method = RequestMethod.GET)
+    @RequestMapping(value = "/api/synchronize", method = RequestMethod.GET)
     @Timed
-    @ResponseBody
-    public List<Map<Long, InfiniteTracker>> synchronize() {
+    public List<InfiniteTrackerSynchronizeDto> synchronize() {
         log.debug("REST request to synchronize the tracker : {}");
-        List<Map<Long, InfiniteTracker>> result = new ArrayList<>();
-
-        List<InfiniteTracker> trackers = infiniteTrackerRepository.findTop5ByOrderByDateLastSyncAsc();
-
-        for (InfiniteTracker tracker : trackers) {
-            tracker.setDateLastSync(new DateTime());
-            infiniteTrackerRepository.save(tracker);
-            List<Torrent> torrents = new ArrayList<>();
-            RestTemplate restTemplate = new RestTemplate();
-            Torrent[] trackerTorrents = restTemplate.getForObject(tracker.getUrl() + "?file=true", Torrent[].class);
-
-            for (Torrent torrent : trackerTorrents) {
-                torrents.add(torrent);
-            }
-
-            Long nbTorrents = torrents.stream()
+        return infiniteTrackerRepository.findTop5ByOrderByDateLastSyncAsc().stream()
+            .peek(tracker -> tracker.setDateLastSync(new DateTime()))
+            .map(infiniteTrackerRepository::save)
+            .map(tracker -> new InfiniteTrackerSynchronizeDto(tracker, getAllTorrentsForTracker(tracker).stream()
                 .filter(torrent -> torrentRepository.findOne(torrent.getId()) == null)
-                .peek(torrent -> {
-                    torrentRepository.save(torrent);
-                })
-                .count();
-
-            result.add(new HashMap<Long, InfiniteTracker>() {{
-                put(nbTorrents, tracker);
-            }});
-        }
-
-        return result;
+                .peek(torrentRepository::save)
+                .collect(Collectors.counting()))
+            )
+            .collect(Collectors.toList());
+    }
+    private List<Torrent> getAllTorrentsForTracker(InfiniteTracker tracker) {
+        return restTemplate.exchange(tracker.getUrl() + "?file=true", HttpMethod.GET, null, new ParameterizedTypeReference<List<Torrent>>() {
+        }).getBody();
     }
 
 }

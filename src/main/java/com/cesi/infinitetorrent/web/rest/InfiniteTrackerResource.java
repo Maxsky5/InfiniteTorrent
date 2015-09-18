@@ -49,7 +49,7 @@ public class InfiniteTrackerResource {
         InfiniteTracker result = infiniteTrackerRepository.save(tracker);
 
         return ResponseEntity.created(new URI("/api/trackers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("tracker", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert("tracker", result.getId()))
             .body(result);
     }
 

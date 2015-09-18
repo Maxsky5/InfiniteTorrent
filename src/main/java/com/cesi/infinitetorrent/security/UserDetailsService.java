@@ -1,6 +1,5 @@
 package com.cesi.infinitetorrent.security;
 
-import com.cesi.infinitetorrent.domain.Authority;
 import com.cesi.infinitetorrent.domain.User;
 import com.cesi.infinitetorrent.repository.UserRepository;
 import org.slf4j.Logger;
@@ -13,11 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -44,6 +44,7 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Date d'ajout</th>
+                    <th>Date de modif</th>
                     <th>Taille totale</th>
                     <th></th>
                 </tr>
@@ -53,6 +54,7 @@
                     <td><a ui-sref="torrent.detail({id:torrent.id})">{{torrent.id}}</a></td>
                     <td>{{torrent.name}}</td>
                     <td>{{torrent.created}}</td>
+                    <td>{{torrent.updated}}</td>
                     <td>{{torrent.totalSize}}</td>
                     <td>
                         <button type="submit"
