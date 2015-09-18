@@ -51,7 +51,7 @@ public class SynchronizeResource {
             .collect(Collectors.toList());
     }
     private List<Torrent> getAllTorrentsForTracker(InfiniteTracker tracker) {
-        return restTemplate.exchange(tracker.getUrl() + "?file=true", HttpMethod.GET, null, new ParameterizedTypeReference<List<Torrent>>() {
+        return restTemplate.exchange(tracker.getUrl() + "/sync/torrents", HttpMethod.GET, null, new ParameterizedTypeReference<List<Torrent>>() {
         }).getBody();
     }
 

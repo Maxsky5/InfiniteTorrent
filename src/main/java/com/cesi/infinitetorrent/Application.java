@@ -1,6 +1,9 @@
 package com.cesi.infinitetorrent;
 
 import com.cesi.infinitetorrent.config.Constants;
+import com.cesi.infinitetorrent.repository.TorrentRepository;
+import com.cesi.infinitetorrent.service.InfiniteTrackerService;
+import com.turn.ttorrent.tracker.Tracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,6 +31,9 @@ public class Application {
 
     @Inject
     private Environment env;
+
+    @Inject
+    private InfiniteTrackerService infiniteTrackerService;
 
     /**
      * Initializes InfiniteTorrent.
@@ -57,6 +64,8 @@ public class Application {
                     "It should not run with both the 'dev' and 'cloud' profiles at the same time.");
             }
         }
+
+        infiniteTrackerService.startTracker();
     }
 
     /**
@@ -69,8 +78,8 @@ public class Application {
         addDefaultProfile(app, source);
         Environment env = app.run(args).getEnvironment();
         log.info("Access URLs:\n----------------------------------------------------------\n\t" +
-            "Local: \t\thttp://127.0.0.1:{}\n\t" +
-            "External: \thttp://{}:{}\n----------------------------------------------------------",
+                "Local: \t\thttp://127.0.0.1:{}\n\t" +
+                "External: \thttp://{}:{}\n----------------------------------------------------------",
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));
@@ -81,7 +90,7 @@ public class Application {
      */
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
-                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
