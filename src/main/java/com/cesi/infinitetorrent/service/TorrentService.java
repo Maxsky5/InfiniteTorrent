@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -43,7 +44,7 @@ public class TorrentService {
         final URI remoteUri = new URI("http://" + requestUri.getHost() + ":" + requestUri.getPort() + "/announce");
 
         try {
-            File tempFile = File.createTempFile("IF-", ".torrent");
+            File tempFile = Files.createTempFile("IF-", ".torrent").toFile();
             FileUtils.writeByteArrayToFile(tempFile, torrent.getFile());
 
             TrackedTorrent torrentFile = TrackedTorrent.load(tempFile);
